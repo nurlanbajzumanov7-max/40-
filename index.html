@@ -1,3 +1,8 @@
+Міне, мекенжайды Google Maps арқылы ашатын батырмасы бар және OpenStreetMap арқылы интерактивті картасы қосылған дайын HTML/JS коды.
+
+Қонақтар батырманы басу арқылы мейрамханаға дейінгі маршрутты 2GIS немесе Google Maps арқылы бірден аша алады.
+
+```html
 <!DOCTYPE html>
 <html lang="kk">
 <head>
@@ -5,6 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>40 күндік асқа шақырту</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Карта стилі -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         * {
             box-sizing: border-box;
@@ -23,7 +30,6 @@
             position: relative;
         }
         
-        /* Музыка батырмасы */
         .music-btn {
             position: fixed;
             top: 20px;
@@ -39,14 +45,6 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             z-index: 1000;
-            transition: all 0.3s ease;
-        }
-        .music-btn:hover {
-            transform: scale(1.08);
-        }
-        .music-icon {
-            font-size: 20px;
-            color: #c5a059;
         }
 
         .card {
@@ -58,7 +56,6 @@
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             border: 2px solid #dfd3c3;
-            position: relative;
         }
         .ornament-top {
             font-size: 24px;
@@ -139,7 +136,84 @@
             font-size: 16px;
             font-weight: 600;
             color: #333333;
+            margin-bottom: 15px;
         }
+
+        /* Карта мен навигация батырмасы */
+        #map {
+            height: 200px;
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+        }
+        .map-btn {
+            display: inline-block;
+            background-color: #c5a059;
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .map-btn:hover {
+            background-color: #b08c46;
+        }
+
+        /* Сауалнама (RSVP) */
+        .rsvp-section {
+            background-color: #f4efe9;
+            border-radius: 12px;
+            padding: 20px 15px;
+            margin-bottom: 20px;
+        }
+        .rsvp-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .input-group {
+            margin-bottom: 12px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+        }
+        .btn-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-yes {
+            background-color: #2d6a4f;
+            color: white;
+        }
+        .btn-no {
+            background-color: #a4161a;
+            color: white;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+
         .footer-ornament {
             color: #c5a059;
             font-size: 20px;
@@ -149,15 +223,12 @@
 </head>
 <body>
 
-    <!-- Музыка қосу/өшіру батырмасы -->
     <button class="music-btn" id="musicToggle" onclick="toggleMusic()">
         <span class="music-icon" id="musicIcon">🎵</span>
     </button>
 
-    <!-- Музыка аудио тиегіші -->
     <audio id="bgMusic" loop>
         <source src="music.mp3" type="audio/mpeg">
-        Браузеріңіз аудионы қолдамайды.
     </audio>
 
     <div class="card">
@@ -188,12 +259,67 @@
             <div class="time">Сағат 12:00-де</div>
             <div class="address-title">Мекенжайымыз</div>
             <div class="address">Сарқан қаласы, "Жетісу" мейрамханасы</div>
+            
+            <!-- Интерактивті карта -->
+            <div id="map"></div>
+            
+            <!-- Навигация ашу батырмасы -->
+            <a href="https://maps.google.com/?q=Сарқан+Жетісу+мейрамханасы" target="_blank" class="map-btn">
+                📍 Картадан ашу (Google Maps)
+            </a>
+        </div>
+
+        <!-- Сауалнама (RSVP) -->
+        <div class="rsvp-section">
+            <div class="rsvp-title">Жауап беруіңізді сұраймыз</div>
+            <div class="input-group">
+                <input type="text" id="guestName" placeholder="Аты-жөніңізді жазыңыз..." required>
+            </div>
+            <div class="btn-container">
+                <button class="btn btn-yes" onclick="sendRSVP(true)">Иә, барамын</button>
+                <button class="btn btn-no" onclick="sendRSVP(false)">Бара алмаймын</button>
+            </div>
         </div>
 
         <div class="footer-ornament">❖ ❖ ❖</div>
     </div>
 
+    <!-- Карта скрипті -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        // Сарқан қаласының координатасы бойынша картаны іске қосу
+        const lat = 45.4144;
+        const lng = 79.9142;
+
+        const map = L.map('map').setView([lat, lng], 15);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        L.marker([lat, lng]).addTo(map)
+            .bindPopup('<b>"Жетісу" мейрамханасы</b><br>Сарқан қаласы')
+            .openPopup();
+
+        // WhatsApp-қа жауап жіберу
+        const myPhoneNumber = "77002746834";
+
+        function sendRSVP(willAttend) {
+            const nameInput = document.getElementById("guestName").value.trim();
+            if (!nameInput) {
+                alert("Өтініш, аты-жөніңізді енгізіңіз!");
+                return;
+            }
+
+            let statusText = willAttend ? "Иә, Алла жазса, 40 күндік асқа БАРАМЫН." : "Өкінішке орай, асқа БАРА АЛМАЙМЫН.";
+            let message = `Сәлеметсіз бе! Мен ${nameInput}.\n${statusText}`;
+            
+            let whatsappUrl = `https://api.whatsapp.com/send?phone=${myPhoneNumber}&text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Музыканы басқару
         const music = document.getElementById("bgMusic");
         const musicIcon = document.getElementById("musicIcon");
         let isPlaying = false;
@@ -209,18 +335,17 @@
             isPlaying = !isPlaying;
         }
 
-        // Бетті бірінші рет түрткенде музыка автоматты түрде қосылуы үшін
         document.body.addEventListener('click', function startAudio() {
             if (!isPlaying) {
                 music.play().then(() => {
                     isPlaying = true;
                     musicIcon.textContent = "🔊";
-                }).catch(() => {
-                    // Авто-қосылу бұғатталса, пайдаланушы батырманы өзі басады
-                });
+                }).catch(() => {});
             }
             document.body.removeEventListener('click', startAudio);
         }, { once: true });
     </script>
 </body>
 </html>
+
+```
