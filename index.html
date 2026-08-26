@@ -1,8 +1,3 @@
-Міне, мекенжайды Google Maps арқылы ашатын батырмасы бар және OpenStreetMap арқылы интерактивті картасы қосылған дайын HTML/JS коды.
-
-Қонақтар батырманы басу арқылы мейрамханаға дейінгі маршрутты 2GIS немесе Google Maps арқылы бірден аша алады.
-
-```html
 <!DOCTYPE html>
 <html lang="kk">
 <head>
@@ -10,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>40 күндік асқа шақырту</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Карта стилі -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         * {
@@ -139,7 +133,6 @@
             margin-bottom: 15px;
         }
 
-        /* Карта мен навигация батырмасы */
         #map {
             height: 200px;
             width: 100%;
@@ -162,7 +155,6 @@
             background-color: #b08c46;
         }
 
-        /* Сауалнама (RSVP) */
         .rsvp-section {
             background-color: #f4efe9;
             border-radius: 12px;
@@ -260,16 +252,13 @@
             <div class="address-title">Мекенжайымыз</div>
             <div class="address">Сарқан қаласы, "Жетісу" мейрамханасы</div>
             
-            <!-- Интерактивті карта -->
             <div id="map"></div>
             
-            <!-- Навигация ашу батырмасы -->
             <a href="https://maps.google.com/?q=Сарқан+Жетісу+мейрамханасы" target="_blank" class="map-btn">
                 📍 Картадан ашу (Google Maps)
             </a>
         </div>
 
-        <!-- Сауалнама (RSVP) -->
         <div class="rsvp-section">
             <div class="rsvp-title">Жауап беруіңізді сұраймыз</div>
             <div class="input-group">
@@ -284,10 +273,8 @@
         <div class="footer-ornament">❖ ❖ ❖</div>
     </div>
 
-    <!-- Карта скрипті -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Сарқан қаласының координатасы бойынша картаны іске қосу
         const lat = 45.4144;
         const lng = 79.9142;
 
@@ -302,7 +289,7 @@
             .bindPopup('<b>"Жетісу" мейрамханасы</b><br>Сарқан қаласы')
             .openPopup();
 
-        // WhatsApp-қа жауап жіберу
+        // Индираның WhatsApp нөмірі сақталды
         const myPhoneNumber = "77074239454";
 
         function sendRSVP(willAttend) {
@@ -313,13 +300,12 @@
             }
 
             let statusText = willAttend ? "Иә, Алла жазса, 40 күндік асқа БАРАМЫН." : "Өкінішке орай, асқа БАРА АЛМАЙМЫН.";
-            let message = `Сәлеметсіз бе! Мен ${nameInput}.\n${statusText}`;
+            let message = `Сәлеметсіз бе, Индира! Мен ${nameInput}.\n${statusText}`;
             
             let whatsappUrl = `https://api.whatsapp.com/send?phone=${myPhoneNumber}&text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
         }
 
-        // Музыканы басқару
         const music = document.getElementById("bgMusic");
         const musicIcon = document.getElementById("musicIcon");
         let isPlaying = false;
@@ -347,5 +333,3 @@
     </script>
 </body>
 </html>
-
-```
