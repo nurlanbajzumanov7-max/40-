@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>40 күндік асқа шақырту</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #f4efe9;
+            font-family: 'Montserrat', sans-serif;
+            color: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+            position: relative;
+        }
+        
+        /* Музыка батырмасы */
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #ffffff;
+            border: 2px solid #c5a059;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .music-btn:hover {
+            transform: scale(1.08);
+        }
+        .music-icon {
+            font-size: 20px;
+            color: #c5a059;
+        }
+
+        .card {
+            background: #ffffff;
+            max-width: 500px;
+            width: 100%;
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 2px solid #dfd3c3;
+            position: relative;
+        }
+        .ornament-top {
+            font-size: 24px;
+            color: #c5a059;
+            margin-bottom: 15px;
+        }
+        .photo-container {
+            width: 170px;
+            height: 220px;
+            margin: 0 auto 20px auto;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 3px solid #c5a059;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .greeting {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.5;
+            color: #333333;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+        .subtitle {
+            font-family: 'Amiri', serif;
+            font-size: 20px;
+            font-style: italic;
+            color: #555555;
+            margin-bottom: 12px;
+        }
+        .name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2d6a4f;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        .invitation-text {
+            font-family: 'Amiri', serif;
+            font-size: 19px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+        .details-box {
+            background-color: #fbf9f5;
+            border: 1px solid #e8dfd8;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+        .date {
+            font-size: 26px;
+            font-weight: 700;
+            color: #2d6a4f;
+            margin-bottom: 5px;
+        }
+        .time {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d6a4f;
+        }
+        .address-title {
+            font-size: 13px;
+            color: #777777;
+            margin-top: 15px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .address {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333333;
+        }
+        .footer-ornament {
+            color: #c5a059;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Музыка қосу/өшіру батырмасы -->
+    <button class="music-btn" id="musicToggle" onclick="toggleMusic()">
+        <span class="music-icon" id="musicIcon">🎵</span>
+    </button>
+
+    <!-- Музыка аудио тиегіші -->
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+        Браузеріңіз аудионы қолдамайды.
+    </audio>
+
+    <div class="card">
+        <div class="ornament-top">❖ ☪ ❖</div>
+        
+        <div class="photo-container">
+            <img src="photo.jpg" alt="Ошаганов Серик Төлеубайұлы">
+        </div>
+
+        <p class="greeting">
+            Құрметті ағайын-туыс, бауырлар, құда-жегжат, дос жарандар, әріптестер, көршілер және барша көзін көрген жамағат!
+        </p>
+
+        <p class="subtitle">
+            Сіздерді асқар тау әке, асыл жар, қимас бауыр
+        </p>
+
+        <h1 class="name">
+            Ошаганов Серик Төлеубайұлын
+        </h1>
+
+        <p class="invitation-text">
+            Рухына бағышталып берілетін 40 күндік АСЫНА ШАҚЫРАМЫЗ!
+        </p>
+
+        <div class="details-box">
+            <div class="date">29.08.2026</div>
+            <div class="time">Сағат 12:00-де</div>
+            <div class="address-title">Мекенжайымыз</div>
+            <div class="address">Сарқан қаласы, "Жетісу" мейрамханасы</div>
+        </div>
+
+        <div class="footer-ornament">❖ ❖ ❖</div>
+    </div>
+
+    <script>
+        const music = document.getElementById("bgMusic");
+        const musicIcon = document.getElementById("musicIcon");
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicIcon.textContent = "🎵";
+            } else {
+                music.play();
+                musicIcon.textContent = "🔊";
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Бетті бірінші рет түрткенде музыка автоматты түрде қосылуы үшін
+        document.body.addEventListener('click', function startAudio() {
+            if (!isPlaying) {
+                music.play().then(() => {
+                    isPlaying = true;
+                    musicIcon.textContent = "🔊";
+                }).catch(() => {
+                    // Авто-қосылу бұғатталса, пайдаланушы батырманы өзі басады
+                });
+            }
+            document.body.removeEventListener('click', startAudio);
+        }, { once: true });
+    </script>
+</body>
+</html>
